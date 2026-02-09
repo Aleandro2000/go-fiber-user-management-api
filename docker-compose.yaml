@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-rest-api
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=go_rest_api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    profiles:
+      - production
+      - staging
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: go-rest-api-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_rest_api
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    profiles:
+      - staging
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

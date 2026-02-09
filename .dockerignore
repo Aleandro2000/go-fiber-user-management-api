@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+LICENCE
+docs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (use docker secrets or env vars instead)
+.env.local
+.env.staging
+.env.production
+
+# Test files
+*_test.go
+**/*_test.go
+
+# Build artifacts
+bin/
+dist/
+build/
+
+# Docker files (not needed in image)
+docker-compose*.yaml
+Dockerfile*
+
+# Deployment scripts
+deploy.*.sh
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
